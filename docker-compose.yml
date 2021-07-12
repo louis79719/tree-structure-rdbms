@@ -1,0 +1,25 @@
+version: "3.1"
+services:
+  node_application:
+    build:
+      context: ./application
+    environment:
+      - "MYSQL_HOST=db"
+      - "MYSQL_USERNAME=root"
+      - "MYSQL_PWD=pwd"
+      - "MYSQL_PORT=3306"
+      - "MYSQL_DATABASE=application"
+    ports:
+      - "8080:8000"
+    depends_on:
+      - "db"
+  db:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pwd
+    volumes:
+      - ./.mysql:/var/lib/mysql
+    ports:
+      - 8881:3306
